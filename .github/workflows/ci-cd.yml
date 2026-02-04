@@ -60,7 +60,7 @@ jobs:
     needs: [build-and-test]
     steps:
       - name: 🎉 Deployment Ready
-      - run: |
+        run: |
           echo "========================================="
           echo "🎉 API ready for deployment!"
           echo "========================================="
