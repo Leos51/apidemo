@@ -1,5 +1,8 @@
 package training.afpa.cda24060.apidemo.controller;
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import training.afpa.cda24060.apidemo.model.Person;
@@ -35,13 +38,13 @@ public class PersonController {
         if(personOptional.isPresent()){
             Person personToUpdate = personOptional.get();
 
-            String firstName = person.getFirstName();
+            String firstName = person.getFirstname();
             if(firstName != null){
-                personToUpdate.setFirstName(firstName);
+                personToUpdate.setFirstname(firstName);
             }
-            String lastName = person.getLastName();
+            String lastName = person.getLastname();
             if(lastName != null){
-                personToUpdate.setLastName(lastName);
+                personToUpdate.setLastname(lastName);
             }
             personService.savePerson(personToUpdate);
             return personToUpdate;

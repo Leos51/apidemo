@@ -2,9 +2,7 @@ package training.afpa.cda24060.apidemo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Data
@@ -13,16 +11,13 @@ import java.time.LocalDate;
 public class Person {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name="lastname")
-    private String lastName;
+    private String lastname;
 
     @Column(name="firstname")
-    private String firstName;
-
-    @Column(name="birthdate")
-    private LocalDate birthDate;
-
+    private String firstname;
 }
