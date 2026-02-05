@@ -58,8 +58,8 @@ jobs:
       mysql_server:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: apidemo_test
         ports:
           - 3306:3306
         options: >-
@@ -86,7 +86,7 @@ jobs:
           done
 
       - name: Create_DB_from_script
-        run: myssql -h 127.0.0.1 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < infra/mysql/dump/script.sql
+        run: myssql -h 127.0.0.1 -u root -proot root < infra/mysql/dump/script.sql
 
 
 
