@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     ) ENGINE=InnoDB;
 
 -- Données de test
-INSERT INTO Person (firstname, lastname) VALUES
+INSERT INTO `user` (firstname, lastname) VALUES
                                              ('Alice', 'THORNTON'),
                                              ('Lance', 'RIDDLE'),
                                              ('Brandon', 'HUTTINS'),
