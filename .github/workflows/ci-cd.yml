@@ -9,8 +9,8 @@ permissions:
 
 env:
   JAVA_VERSION: '21'
-  SONAR_PROJECT_KEY: apidemo
-  SONAR_ORGANIZATION: Leos
+  SONAR_PROJECT_KEY: Leos51_apidemo
+  SONAR_ORGANIZATION: abraham-adouane
 
 jobs:
   # ========================================
