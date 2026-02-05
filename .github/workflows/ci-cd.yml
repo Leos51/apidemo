@@ -170,6 +170,8 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
 
 
@@ -220,7 +222,7 @@ jobs:
   deploy:
     name: 🚀 Deploy notif
     runs-on: ubuntu-latest
-    needs: [unit-tests, integration-tests]
+    needs: [build]
     steps:
       - name: 🎉 Deployment Ready
         run: |
@@ -234,7 +236,7 @@ jobs:
   Discord:
     name: 📢 Discord Notification
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: build
 
     steps:
       - name: Discord notification
@@ -242,7 +244,7 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "API CI/CD Pipeline"
-          description: "Pipeline completed!"
+          title: "API CI/CD Workflow"
+          description: "Workflow completed!"
           color: 0x00ff00
           username: GitHub Actions
