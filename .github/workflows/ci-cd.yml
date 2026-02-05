@@ -9,7 +9,7 @@ permissions:
 
 env:
   JAVA_VERSION: '21'
-  SONAR_PROJECT_KEY: Leos_apidemo
+  SONAR_PROJECT_KEY: apidemo
   SONAR_ORGANIZATION: Leos
 
 jobs:
