@@ -2,6 +2,11 @@ name: API CI/CD Workflow
 
 on: [push]
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 env:
   JAVA_VERSION: '21'
   SONAR_PROJECT_KEY: Leos_apidemo
@@ -87,13 +92,13 @@ jobs:
 
       - name: 📂 Load Database Schema
         run: |
-          echo "Load db from dump"
+          echo "Loading database from dump"
           mysql -h 127.0.0.1 -u root -proot apidemo_test < infra/mysql/dump/script.sql
-          echo "✅ DB load success"
+          echo "✅ Database loaded successfully!"
 
 
       - name: 🔗 Run Integration Tests
-        run: mvn verify -Dtest=*IT
+        run: mvn verify
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/apidemo_test
           SPRING_DATASOURCE_USERNAME: root
@@ -119,6 +124,43 @@ jobs:
   # ========================================
   # JOB 3 : ANALYSE SONARCLOUD
   # ========================================
+  sonarcloud:
+    name: 🔍 SonarCloud Analysis
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 🔍 Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+
+
 
 
   # ========================================
@@ -148,7 +190,7 @@ jobs:
         with:
           name: api-jar
           path: target/*.jar
-          retention-days: 1
+          retention-days: 30
 
       - name: 📊 Build Info
         run: |
@@ -174,8 +216,11 @@ jobs:
           echo "🎉 API ready for deployment!"
           echo "========================================="
 
+  # ========================================
+  # JOB 7 : DISCORD NOTIFICATION
+  # ========================================
   Discord:
-    name: Discord
+    name: 📢 Discord Notification
     runs-on: ubuntu-latest
     needs: deploy
 
@@ -186,4 +231,8 @@ jobs:
         uses: sarisia/actions-status-discord@v1
         if: always()
         with:
-          description: "Project deployed"
+          webhook: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          title: "API CI/CD Pipeline"
+          description: "Pipeline completed!"
+          color: 0x00ff00
+          username: GitHub Actions
