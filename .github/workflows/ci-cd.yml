@@ -117,7 +117,8 @@ jobs:
           find target -type f -name "*.xml"
 
       - name: 📊 Integration Test Report
-        if: always()
+        if: always() && hashFiles('target/failsafe-reports/*.xml') != ''
+
         uses: dorny/test-reporter@v1
         with:
           name: Integration Tests Report
