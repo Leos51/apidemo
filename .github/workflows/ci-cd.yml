@@ -104,6 +104,18 @@ jobs:
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
 
+      - name: 🐛 Debug - List test reports
+        if: always()
+        run: |
+          echo "=== Checking for failsafe reports ==="
+          ls -la target/failsafe-reports/ || echo "❌ Directory not found"
+          echo ""
+          echo "=== Content of XML files ==="
+          find target/failsafe-reports -name "*.xml" -exec cat {} \; || echo "❌ No XML files"
+          echo ""
+          echo "=== All files in target ==="
+          find target -type f -name "*.xml"
+
       - name: 📊 Integration Test Report
         if: always()
         uses: dorny/test-reporter@v1
