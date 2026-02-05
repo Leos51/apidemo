@@ -169,12 +169,18 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+      - name: 📦 Build (compile only)
+        run: mvn -B -DskipTests=true package
+
+      - name: 🔍 SonarCloud Scan
+
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-        run: mvn -B -DskipTests=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+        run: mvn -B -DskipTests=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+          -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
 
 
 
