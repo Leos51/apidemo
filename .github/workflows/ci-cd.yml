@@ -86,7 +86,7 @@ jobs:
           done
 
       - name: Create_DB_from_script
-        run: myssql -h 127.0.0.1 -u root -proot root < infra/mysql/dump/script.sql
+        run: myssql -h 127.0.0.1 -u root -proot apidemo_test < infra/mysql/dump/script.sql
 
 
 
