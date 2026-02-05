@@ -123,7 +123,7 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Integration Tests Report
-          path: target/surefire-reports/*.xml
+          path: target/failsafe-reports/*.xml  # ✅ CHANGÉ
           reporter: java-junit
           fail-on-error: true
 
@@ -132,7 +132,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: integration-test-results
-          path: target/surefire-reports/
+          path: target/failsafe-reports/
           retention-days: 5
 
   # ========================================
@@ -169,9 +169,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           mvn -B compile sonar:sonar \
-          -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
-          -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
-
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
 
   # ========================================
   # JOB 4 : BUILD & PACKAGE
