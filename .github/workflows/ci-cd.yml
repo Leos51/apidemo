@@ -200,7 +200,7 @@ jobs:
         with:
           name: api-jar
           path: target/*.jar
-          retention-days: 30
+          retention-days: 1
 
       - name: 📊 Build Info
         run: |
@@ -227,7 +227,7 @@ jobs:
           echo "========================================="
 
   # ========================================
-  # JOB 7 : DISCORD NOTIFICATION
+  # JOB 7 : NOTIFICATION
   # ========================================
   Discord:
     name: 📢 Discord Notification
@@ -240,7 +240,10 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: "Hey  ${{ github.actor }}"
           title: "API CI/CD Workflow"
           description: "Workflow completed!"
-          color: 0x00ff00
           username: GitHub Actions
+          color: 0x0000ff
+
