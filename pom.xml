@@ -8,11 +8,13 @@
         <version>4.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>training.afpa.cda24060</groupId>
     <artifactId>apiDemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>apiDemo</name>
     <description>apiDemo</description>
+
     <url/>
     <licenses>
         <license/>
@@ -48,11 +50,14 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa-test</artifactId>
@@ -91,6 +96,18 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
