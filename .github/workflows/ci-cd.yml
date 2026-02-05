@@ -239,11 +239,11 @@ jobs:
     steps:
       - name: Discord notification
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          DISCORD_WEBHOOK: "FDFSRJXZbEmv-P539_IF2oosMShGCb7F8E5Zd8IyhRQyV-bLKZDBO-MTtoIwzN-cM2MK"
         uses: sarisia/actions-status-discord@v1
         if: always()
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          webhook: "FDFSRJXZbEmv-P539_IF2oosMShGCb7F8E5Zd8IyhRQyV-bLKZDBO-MTtoIwzN-cM2MK"
           title: "API CI/CD Pipeline"
           description: "Pipeline completed!"
           color: 0x00ff00
