@@ -214,28 +214,28 @@ jobs:
   # ========================================
   # JOB 6 : CREATING DOCKERFILE
   # ========================================
-  create_dockerfile:
-    name: 🐋 Creation Dockerfile
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-
-
-
-
-  publish_container:
-    name: Publish Docker
-    runs-on: ubuntu-latest
-    needs: create_dockerfile
-    steps:
-    - uses: actions/checkout@v4
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@v5
-      with:
-        name: owner/repository/image
-        username: ${{ github.actor }}
-        password: ${{ github.token}}
-        registry: ghcr.io
+#  create_dockerfile:
+#    name: 🐋 Creation Dockerfile
+#    runs-on: ubuntu-latest
+#    needs: deploy
+#    steps:
+#
+#
+#
+#
+#  publish_container:
+#    name: Publish Docker
+#    runs-on: ubuntu-latest
+#    needs: create_dockerfile
+#    steps:
+#    - uses: actions/checkout@v4
+#    - name: Publish to Registry
+#      uses: elgohr/Publish-Docker-Github-Action@v5
+#      with:
+#        name: owner/repository/image
+#        username: ${{ github.actor }}
+#        password: ${{ github.token}}
+#        registry: ghcr.io
 
   # ========================================
   # JOB 7 : NOTIFICATION
