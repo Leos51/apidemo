@@ -8,7 +8,6 @@ permissions:
   pull-requests: write
 
 env:
-  JAVA_VERSION: '21'
   SONAR_PROJECT_KEY: Leos51_apidemo
   SONAR_ORGANIZATION: abraham-adouane
 
@@ -24,10 +23,10 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: ☕ Set up JDK ${{ env.JAVA_VERSION }}
+      - name: ☕ Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: ${{ vars.JAVA_VERSION }}
           distribution: 'temurin'
           cache: 'maven'
 
@@ -77,10 +76,10 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: ☕ Set up JDK ${{ env.JAVA_VERSION }}
+      - name: ☕ Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: ${{ vars.JAVA_VERSION }}
           distribution: 'temurin'
           cache: 'maven'
 
@@ -103,20 +102,6 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/apidemo_test
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
-
-      - name: 🐛 Debug - List test reports
-        if: always()
-        run: |
-          echo "=== Checking for failsafe reports ==="
-          ls -la target/failsafe-reports/ || echo "❌ Directory not found"
-          echo ""
-          echo "=== Content of XML files ==="
-          find target/failsafe-reports -name "*.xml" -exec cat {} \; || echo "❌ No XML files"
-          echo ""
-          echo "=== All files in target ==="
-          find target -type f -name "*.xml"
-
-
 
       - name: 📊 Integration Test Report
         if: always()
@@ -227,6 +212,32 @@ jobs:
           echo "========================================="
 
   # ========================================
+  # JOB 6 : CREATING DOCKERFILE
+  # ========================================
+  create_dockerfile:
+    name: 🐋 Creation Dockerfile
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+
+
+
+
+  publish_container:
+    name: Publish Docker
+    runs-on: ubuntu-latest
+    needs: create_dockerfile
+    steps:
+    - uses: actions/checkout@v4
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: owner/repository/image
+        username: ${{ github.actor }}
+        password: ${{ github.token}}
+        registry: ghcr.io
+
+  # ========================================
   # JOB 7 : NOTIFICATION
   # ========================================
   Discord:
@@ -247,3 +258,21 @@ jobs:
           username: GitHub Actions
           color: 0x0000ff
 
+  Teams:
+    name: 📢 Teams Notification
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Notify dedicated Teams channel
+        if: always()
+        uses: jdcargile/ms-teams-notification@v1.4
+        with:
+          github-token: ${{ github.token }}
+          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          notification-summary: "notification message"
+          notification-color: "17a2b8"
+          timezone: "Europe/Paris"
+          verbose-logging: true
