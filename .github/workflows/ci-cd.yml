@@ -85,8 +85,12 @@ jobs:
 
       - name: ⏳ Wait for MySQL
         run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
-            sleep 1
+          for i in {1..30}; do
+          if mysqladmin ping -h 127.0.0.1 -P 3306 -u root -proot --silent; then
+           echo "✅ MySQL ready!"
+           break
+          fi
+          sleep 2
           done
 
       - name: 📂 Load Database Schema
@@ -94,7 +98,11 @@ jobs:
           echo "Loading database from dump"
           mysql -h 127.0.0.1 -P 3306 -u root -proot springboot < infra/mysql/dump/script.sql
           echo "✅ Database loaded successfully!"
-          mysql -h 127.0.0.1 -P 3306 -u root -proot springboot -e "SELECT * FROM user;"
+
+      - name: 🔍 Verify Database Content
+        run: |
+          echo "Checking database content..."
+          mysql -h 127.0.0.1 -P 3306 -u root -proot springboot -e "SELECT * FROM user;
 
 
       - name: 🔗 Run Integration Tests
