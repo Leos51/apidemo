@@ -107,7 +107,7 @@ jobs:
 
       - name: 🔗 Run Integration Tests
         run: |
-          mvn verify -Dsurefire.skip=true \
+          mvn failsafe:integration-test failsafe:verify \
             -Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/springboot \
             -Dspring.datasource.username=root \
             -Dspring.datasource.password=root \
