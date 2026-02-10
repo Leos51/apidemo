@@ -63,7 +63,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: apidemo_test
+          MYSQL_DATABASE: springboot
         ports:
           - 3306:3306
         options: >-
@@ -92,14 +92,14 @@ jobs:
       - name: 📂 Load Database Schema
         run: |
           echo "Loading database from dump"
-          mysql -h 127.0.0.1 -u root -proot apidemo_test < infra/mysql/dump/script.sql
+          mysql -h 127.0.0.1 -u root -proot springboot < infra/mysql/dump/script.sql
           echo "✅ Database loaded successfully!"
 
 
       - name: 🔗 Run Integration Tests
         run: mvn verify
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/apidemo_test
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/springboot
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
 
@@ -253,25 +253,6 @@ jobs:
           echo "🎉 API ready for deployment!"
           echo "========================================="
 
-
-
-
-
-
-#  publish_container:
-#    name: Publish Docker
-#    runs-on: ubuntu-latest
-#    needs: create_dockerfile
-#    steps:
-#    - uses: actions/checkout@v4
-#    - name: Publish to Registry
-#      uses: elgohr/Publish-Docker-Github-Action@v5
-#      with:
-#        name: owner/repository/image
-#        username: ${{ github.actor }}
-#        password: ${{ github.token}}
-#        registry: ghcr.io
-
   # ========================================
   # JOB 7 : NOTIFICATION
   # ========================================
@@ -292,18 +273,3 @@ jobs:
           description: "Workflow completed!"
           username: GitHub Actions
           color: 0x0000ff
-
-#  Teams:
-#    name: 📢 Teams Notification
-#    runs-on: ubuntu-latest
-#    needs: deploy
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Notify dedicated Teams channel
-#        if: always()
-#        uses: dchourasia/ms-teams-notification@1.0
-#        with:
-#          github-token: ${{ github.token }}
-#          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
