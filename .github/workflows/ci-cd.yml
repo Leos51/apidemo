@@ -197,6 +197,46 @@ jobs:
           
 
   # ========================================
+  # JOB 5 : BUILD & PUSH DOCKER IMAGE
+  # ========================================
+  docker:
+    name: Build & push Docker Image
+    runs-on: ubuntu-latest
+    needs: [build, sonarcloud]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download jar Artifact
+        uses: actions/download-artifact@v4
+        with: api-jar
+        path: target/
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 🏷️ Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/apidemo
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: 🐳 Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  # ========================================
   # JOB 5 : DEPLOY NOTIFICATION
   # ========================================
 
@@ -211,18 +251,11 @@ jobs:
           echo "🎉 API ready for deployment!"
           echo "========================================="
 
-  # ========================================
-  # JOB 6 : CREATING DOCKERFILE
-  # ========================================
-#  create_dockerfile:
-#    name: 🐋 Creation Dockerfile
-#    runs-on: ubuntu-latest
-#    needs: deploy
-#    steps:
-#
-#
-#
-#
+
+
+
+
+
 #  publish_container:
 #    name: Publish Docker
 #    runs-on: ubuntu-latest
@@ -258,21 +291,17 @@ jobs:
           username: GitHub Actions
           color: 0x0000ff
 
-  Teams:
-    name: 📢 Teams Notification
-    runs-on: ubuntu-latest
-    needs: deploy
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Notify dedicated Teams channel
-        if: always()
-        uses: jdcargile/ms-teams-notification@v1.4
-        with:
-          github-token: ${{ github.token }}
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          notification-summary: "notification message"
-          notification-color: "17a2b8"
-          timezone: "Europe/Paris"
-          verbose-logging: true
+#  Teams:
+#    name: 📢 Teams Notification
+#    runs-on: ubuntu-latest
+#    needs: deploy
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Notify dedicated Teams channel
+#        if: always()
+#        uses: dchourasia/ms-teams-notification@1.0
+#        with:
+#          github-token: ${{ github.token }}
+#          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

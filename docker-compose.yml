@@ -1,0 +1,46 @@
+services:
+  # Base de données MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-apidemo
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./infra/mysql/dump/script.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql -u root -proot -e 'SELECT 1 FROM springboot.user LIMIT 1;' || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - apidemo_net
+
+  # API Spring Boot
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apidemo
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    ports:
+      - "${API_PORT}:9090"
+    networks:
+      - apidemo_net
+
+volumes:
+  mysql-data:
+
+networks:
+  apidemo_net:
+    driver: bridge

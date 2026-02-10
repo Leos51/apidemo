@@ -1,4 +1,4 @@
-USE apidemo_test;
+USE springboot;
 
 -- Création de la table
 CREATE TABLE IF NOT EXISTS `user` (
