@@ -113,22 +113,22 @@ jobs:
             -Dspring.datasource.password=root \
             -Dspring.jpa.hibernate.ddl-auto=validate
 
-      - name: 📊 Integration Test Report
-        if: always()
-        uses: dorny/test-reporter@v2
-        with:
-          name: Integration Tests Report
-          path: target/failsafe-reports/TEST-*.xml
-          reporter: java-junit
-          fail-on-error: true
-
-      - name: 📈 Upload Integration Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: integration-test-results
-          path: target/failsafe-reports/
-          retention-days: 5
+#      - name: 📊 Integration Test Report
+#        if: always()
+#        uses: dorny/test-reporter@v2
+#        with:
+#          name: Integration Tests Report
+#          path: target/failsafe-reports/TEST-*.xml
+#          reporter: java-junit
+#          fail-on-error: true
+#
+#      - name: 📈 Upload Integration Test Results
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: integration-test-results
+#          path: target/failsafe-reports/
+#          retention-days: 5
 
   # ========================================
   # JOB 3 : ANALYSE SONARCLOUD
