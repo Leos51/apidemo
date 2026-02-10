@@ -245,7 +245,7 @@ jobs:
   deploy:
     name: 🚀 Deploy notif
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [docker]
     steps:
       - name: 🎉 Deployment Ready
         run: |
