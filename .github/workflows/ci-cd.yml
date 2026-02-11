@@ -3,9 +3,10 @@ name: API CI/CD Workflow
 on: [push]
 
 permissions:
-  contents: read
+  contents: write
   checks: write
   pull-requests: write
+  pages: write
 
 env:
   SONAR_PROJECT_KEY: Leos51_apidemo
@@ -130,7 +131,10 @@ jobs:
 #          path: target/failsafe-reports/
 #          retention-days: 5
 
-      - name: Deploy_Allure_Report_to_Github_Pages
+      - name: 📊 Generate Allure Report
+        run: mvn allure:report
+
+      - name: 📤 Deploy Allure Report
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
