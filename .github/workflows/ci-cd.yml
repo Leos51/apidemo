@@ -250,7 +250,7 @@ jobs:
 
 
 
-      - run: echo "🔥 This job status is ${{ job.status }}
+#      - run: echo "🔥 This job status is ${{ job.status }}
 
   # ========================================
   # JOB 5 : DEPLOY NOTIFICATION
