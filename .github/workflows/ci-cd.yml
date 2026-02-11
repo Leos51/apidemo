@@ -172,7 +172,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results
-          path: allure-results/
+          path: target/allure-results/
 
       - name: 📊 Generate Allure Report
         run: mvn allure:report
