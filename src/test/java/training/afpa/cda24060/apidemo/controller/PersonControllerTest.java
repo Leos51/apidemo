@@ -1,5 +1,7 @@
 package training.afpa.cda24060.apidemo.controller;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -13,6 +15,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Epic("Person Management")
+@Feature("Person API")
 @WebMvcTest(PersonController.class)
 class PersonControllerTest {
     @Autowired
