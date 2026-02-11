@@ -131,7 +131,7 @@ jobs:
 #          retention-days: 5
 
       - name: Deploy_Allure_Report_to_Github_Pages
-        if: alwawys()
+        if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ github.token }}
