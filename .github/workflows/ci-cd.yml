@@ -130,6 +130,16 @@ jobs:
 #          path: target/failsafe-reports/
 #          retention-days: 5
 
+      - name: Deploy_Allure_Report_to_Github_Pages
+        if: alwawys()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ github.token }}
+          publish_dir: target/site/allure-maven-plugin
+          destination_dir: allure-report
+          keep_files: false
+
+
   # ========================================
   # JOB 3 : ANALYSE SONARCLOUD
   # ========================================
