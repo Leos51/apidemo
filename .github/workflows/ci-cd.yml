@@ -137,7 +137,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: target/allure-results/
+          path: /allure-results/
           retention-days: 5
 
       - name: 📈 Upload Integration Test Results
@@ -172,7 +172,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results
-          path: target/allure-results/
+          path: /allure-results/
 
       - name: 📊 Generate Allure Report
         run: mvn allure:report
@@ -182,7 +182,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/site/allure-maven-plugin
+          publish_dir: /site/allure-maven-plugin
           destination_dir: allure-report
           keep_files: false
   # ========================================
