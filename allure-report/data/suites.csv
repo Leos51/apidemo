@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Feb 12 07:33:03 UTC 2026","Thu Feb 12 07:33:04 UTC 2026","667","","training.afpa.cda24060.apidemo.controller.PersonControllerIT","","training.afpa.cda24060.apidemo.controller.PersonControllerIT","getPersonsTest","getPersonsTest()",""
+"skipped","Thu Feb 12 07:32:53 UTC 2026","Thu Feb 12 07:32:53 UTC 2026","2","","training.afpa.cda24060.apidemo.ApiDemoApplicationTests","","training.afpa.cda24060.apidemo.ApiDemoApplicationTests","contextLoads","contextLoads()","Test de chargement du contexte Spring Boot"
+"passed","Thu Feb 12 07:32:56 UTC 2026","Thu Feb 12 07:32:56 UTC 2026","148","","training.afpa.cda24060.apidemo.controller.PersonControllerTest","","training.afpa.cda24060.apidemo.controller.PersonControllerTest","getPersonsTest","getPersonsTest()",""
